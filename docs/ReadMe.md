@@ -291,7 +291,7 @@ The uncertainty matrix  is a K-by-K diagonal-positive matrix holding the varianc
 The confidence level of a view represents its reliability on a scale of 0% to 100%. Assuming that an investor is 100% certain in their view, the expected return of their portfolio is then:
 
 $$
-E \left[ R_{100\%} \right] = \pi + \tau \Sigma P^T \left( P \tau \Sigma P^T \right)^{-1} \left( Q - P \pi \right)
+E [ R_{100\%} ] = \pi + \tau \Sigma P^T ( P \tau \Sigma P^T )^{-1} ( Q - P \pi )
 $$
 
 and then the Black-Litterman weights of the portfolio would be found using
