@@ -112,7 +112,7 @@ cov_mat = np.matrix(rho * np.matmul(sigma.transpose(), sigma))
 
 In order to determine the implied optimal returns for Black-Litterman, it is assumed that the consensus portfolio of weights proportional to the market capitalization of the stocks is the optimal portfolio. To find the implied optimal returns, the risk aversion coefficient must be found first.
 
-## *Determine the Risk Aversion Coefficient $(\lambda)$*
+## *Determine the Risk Aversion Coefficient*
 
 The risk aversion coefficient is determined using the expected return and variance of the consensus portfolio and the risk free rate on the trading date.
 
@@ -141,7 +141,7 @@ var = np.var(r_total)
 lam = (exp_wk_r-rf)/var
 ```
 
-## *Determine Implied Optimal Returns $(\pi)$*
+## *Determine Implied Optimal Returns*
 
 Implied optimal returns are calculated by scaling the product of the return covariance and consensus portfolio weights by the risk aversion coefficient.
 
@@ -177,7 +177,7 @@ On the other hand, describing the outperformance of stock 53279110 in comparison
 ![](Stock_Weight_Tbl_2.png)
 
 
-## *Impact Vector (Q)*
+## *Impact Vector*
 
 The impact vector Q holds the consequences on the return that each investor view, other than those of the lowest level, has. Q has a length of the number of views for returns above the minumum level, K. For instance, going back to the example stock forecast output:
 
@@ -226,7 +226,7 @@ Q
 
 
 
-## *Effect Matrix P*
+## *Effect Matrix*
 
 The effect matrix P is a K-by-N matrix where K is still the number of views for returns above the minimum level and N is the number of stocks in the stock forecast selection. This matrix indicates which stocks are affected by each belief in the manner described at the beginning of this section, specifically indicating which stocks are expected to perform worse than the stock of the view in question in a way proportional to the difference in the stocks levels. The creation of this kind of effect matrix was automated as follows:
 
@@ -284,26 +284,26 @@ P
 
 
 
-## *Uncertainty Matrix $\Omega$ and Calibrating Confidence Levels (of the Views)*
+## *Uncertainty Matrix and Calibrating Confidence Levels (of the Views)*
 
 The uncertainty matrix  is a K-by-K diagonal-positive matrix holding the variance for each view, where K is still the number of views for returns above the minimum return level.
 
 The confidence level of a view represents its reliability on a scale of 0% to 100%. Assuming that an investor is 100% certain in their view, the expected return of their portfolio is then:
 
 $$
-E\left[R_{100\%}\right] = \pi + \tau \Sigma P^T \left(P\tau \Sigma P^T\right)^{-1}\left(Q-P\pi\right)
+E \left[ R_{100\%} \right] = \pi + \tau \Sigma P^T \left( P \tau \Sigma P^T \right)^{-1} \left( Q - P \pi \right)
 $$
 
 and then the Black-Litterman weights of the portfolio would be found using
 
 $$
-w_{100\%}=\left(\lambda \Sigma \right)^{-1} E\left[R_{100\%}\right]
+w_{100\%} = \left( \lambda \Sigma \right)^{-1} E \left[ R_{100\%} \right]
 $$
 
 From analyzing the accuracy of the stock forecast method, a confidence level of 35% was decided upon for use on each view. Since this confidence is not 100%, the Black-Litterman weighted portfolio will not deviate from the consensus portfolio with the stock forecast views by 100%. Instead, let
 
 $$
-\Delta_{w} = \left(w_{100\%} - w_{consensus}\right)*0.35
+\Delta_{w} = \left( w_{100\%} - w_{consensus} \right) * 0.35
 $$
 
 be an N-by-1 vector denoting how far the Black-Litterman model will deviate from the consensus portfolio weights based on the stock forecast algorithm views.
@@ -312,20 +312,23 @@ To determine $\Omega$. the following procedure was followed for each individual 
 
 1. The confidence level for each view is defined. A single 35% confidence level was used for each view since each view came from the same stock forecasting algorithm, hence having the same accuracy. It is possible to use different confidence levels for each individual view if necessary/better suited for the views used.
 
-2. The Black-Litterman expected return and Black-Litterman weights for a portfolio based on 100% confidence in the stock forecast view k are determined using the formulae
+2. The Black-Litterman expected return and Black-Litterman weights for a portfolio based on 100% confidence in the stock forecast view k are determined using the formulae where $Q_k$ and $P_k$ are the $k^{th}$ rows of the impact and effect matrices respectively
+
 $$
 E_k\left[R_{100\%}\right] = \pi + \tau \Sigma P_k^T \left(P_k\tau \Sigma P_k^T\right)^{-1}\left(Q_k-P_k\pi\right) \\
 w_{k,100\%} = \left(\lambda \Sigma\right)^{-1}E\left[R_{100\%}\right]
 $$
-where $Q_k$ and $P_k$ are the $k^{th}$ rows of the impact and effect matrices respectively.
+
 3. $\Delta_{w} = \left(w_{100\%} - w_{consensus}\right)*0.35$ is found and used to calculate the confidence adjusted portfolio weights $w_{conf. adj.}=w_{consensus}+\Delta_w$
 
 4. The uncertainty matrix entry $\Omega_{k,k}$ for view k is established by minimizing the squared difference between the confidence adjusted weighting $w_{conf. adj.}$ and the Black-Litterman weighting
+
 $$
 w_k=\left(\lambda\Sigma\right)^{-1}
 \left[\left(\tau\Sigma\right)^{-1}+P_k^T\Omega_{k,k}^{-1}P_k\right]^{-1}
 \left[\left(\tau\Sigma\right)^{-1}\pi+P_k^T\Omega_{k,k}^{-1}Q_k\right]
 $$
+
 The code for this project manages to do this by looping over values of $\Omega_{k,k}$ from 0.00001 to 0.001, computing the Black-Litterman weighting $w_k$ for each possible $\Omega_{k,k}$, taking the squared difference between each $w_k$ and the confidence adjusted weighting $w_{conf. adj.}$, and finally setting $\Omega_{k,k}$ equal to the value of $\Omega_{k,k}$ that produced the smallest squared difference. 
 
 The code used to calibrate the uncertainty matrix $\Omega$ using confidence levels is as follows:
@@ -439,8 +442,8 @@ analysis_plt = analysis_tbl.plot.bar(rot=0)
 
 
     
-![png](output_31_0.png)
-    
+![](output_31_0.png)
+
 
 
 Based on the market capitalization, it appears the preferred stocks to invest in are CUSIPs 15678210 and 53279110. However, since the views used to generate the Black-Litterman allocation believed that 91704710 would outperform all the other stocks selected and that 15678210 would perform the worst, the allocations were adjusted accordingly.
