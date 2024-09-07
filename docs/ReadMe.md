@@ -304,7 +304,7 @@ To determine $\Omega$. the following procedure was followed for each individual 
 
 2. The Black-Litterman expected return and Black-Litterman weights for a portfolio based on 100% confidence in the stock forecast view k are determined using the formulae where $Q_k$ and $P_k$ are the $k^{th}$ rows of the impact and effect matrices respectively
 
-![](E_k\left[R_{100\%}\right]=\pi&plus;\tau\Sigma&space;P_k^T\left(P_k\tau\Sigma&space;P_k^T\right)^{-1}\left(Q_k-P_k\pi\right))
+![](https://latex.codecogs.com/svg.image?E_k\left[R_{100\%}\right]=\pi&plus;\tau\Sigma&space;P_k^T\left(P_k\tau\Sigma&space;P_k^T\right)^{-1}\left(Q_k-P_k\pi\right))
 
 ![](https://latex.codecogs.com/svg.image?w_{k,100\%}=\left(\lambda\Sigma\right)^{-1}E\left[R_{100\%}\right])
 
