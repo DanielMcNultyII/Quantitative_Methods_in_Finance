@@ -116,9 +116,7 @@ In order to determine the implied optimal returns for Black-Litterman, it is ass
 
 The risk aversion coefficient is determined using the expected return and variance of the consensus portfolio and the risk free rate on the trading date.
 
-$$
-\lambda = \frac{E[R]-r_{free}}{\sigma^2}
-$$
+![](https://latex.codecogs.com/svg.image?\lambda=\frac{E[R]-r_{free}}{\sigma^2})
 
 The code to find this is as follows
 
@@ -145,9 +143,7 @@ lam = (exp_wk_r-rf)/var
 
 Implied optimal returns are calculated by scaling the product of the return covariance and consensus portfolio weights by the risk aversion coefficient.
 
-$$
-\pi = \lambda \Sigma w_{consensus}
-$$
+![](https://latex.codecogs.com/svg.image?\pi=\lambda\Sigma&space;w_{consensus})
 
 
 ```python
@@ -290,21 +286,15 @@ The uncertainty matrix  is a K-by-K diagonal-positive matrix holding the varianc
 
 The confidence level of a view represents its reliability on a scale of 0% to 100%. Assuming that an investor is 100% certain in their view, the expected return of their portfolio is then:
 
-$$
-E[R_{ 100\% }]= \pi + \tau \Sigma P^T(P \tau \Sigma P^T)^{-1}(Q-P\pi)
-$$
+![](https://latex.codecogs.com/svg.image?&space;E[R_{100\%}]=\pi&plus;\tau\Sigma&space;P^T(P\tau\Sigma&space;P^T)^{-1}(Q-P\pi))
 
 and then the Black-Litterman weights of the portfolio would be found using
 
-$$
-w_{100\%} = \left( \lambda \Sigma \right)^{-1} E \left[ R_{100\%} \right]
-$$
+![](https://latex.codecogs.com/svg.image?w_{100\%}=\left(\lambda\Sigma\right)^{-1}E\left[R_{100\%}\right])
 
 From analyzing the accuracy of the stock forecast method, a confidence level of 35% was decided upon for use on each view. Since this confidence is not 100%, the Black-Litterman weighted portfolio will not deviate from the consensus portfolio with the stock forecast views by 100%. Instead, let
 
-$$
-\Delta_{w}=\left(w_{100\%}-w_{consensus}\right)*0.35
-$$
+![](https://latex.codecogs.com/svg.image?\Delta_{w}=\left(w_{100\%}-w_{consensus}\right)*0.35)
 
 be an N-by-1 vector denoting how far the Black-Litterman model will deviate from the consensus portfolio weights based on the stock forecast algorithm views.
 
@@ -314,20 +304,15 @@ To determine $\Omega$. the following procedure was followed for each individual 
 
 2. The Black-Litterman expected return and Black-Litterman weights for a portfolio based on 100% confidence in the stock forecast view k are determined using the formulae where $Q_k$ and $P_k$ are the $k^{th}$ rows of the impact and effect matrices respectively
 
-$$
-E_k\left[R_{100\%}\right] = \pi + \tau \Sigma P_k^T \left(P_k\tau \Sigma P_k^T\right)^{-1}\left(Q_k-P_k\pi\right) \\
-w_{k,100\%} = \left(\lambda \Sigma\right)^{-1}E\left[R_{100\%}\right]
-$$
+![](E_k\left[R_{100\%}\right]=\pi&plus;\tau\Sigma&space;P_k^T\left(P_k\tau\Sigma&space;P_k^T\right)^{-1}\left(Q_k-P_k\pi\right))
 
-3. $\Delta_{w} = \left(w_{100\%} - w_{consensus}\right)*0.35$ is found and used to calculate the confidence adjusted portfolio weights $w_{conf. adj.}=w_{consensus}+\Delta_w$
+![](https://latex.codecogs.com/svg.image?w_{k,100\%}=\left(\lambda\Sigma\right)^{-1}E\left[R_{100\%}\right])
+
+3. $\Delta_{w}$ is found and used to calculate the confidence adjusted portfolio weights $w_{conf. adj.}=w_{consensus}+\Delta_w$
 
 4. The uncertainty matrix entry $\Omega_{k,k}$ for view k is established by minimizing the squared difference between the confidence adjusted weighting $w_{conf. adj.}$ and the Black-Litterman weighting
 
-$$
-w_k=\left(\lambda\Sigma\right)^{-1}
-\left[\left(\tau\Sigma\right)^{-1}+P_k^T\Omega_{k,k}^{-1}P_k\right]^{-1}
-\left[\left(\tau\Sigma\right)^{-1}\pi+P_k^T\Omega_{k,k}^{-1}Q_k\right]
-$$
+![](https://latex.codecogs.com/svg.image?w_{k,100\%}=\left(\lambda\Sigma\right)^{-1}E\left[R_{100\%}\right])
 
 The code for this project manages to do this by looping over values of $\Omega_{k,k}$ from 0.00001 to 0.001, computing the Black-Litterman weighting $w_k$ for each possible $\Omega_{k,k}$, taking the squared difference between each $w_k$ and the confidence adjusted weighting $w_{conf. adj.}$, and finally setting $\Omega_{k,k}$ equal to the value of $\Omega_{k,k}$ that produced the smallest squared difference. 
 
@@ -391,16 +376,11 @@ omega
 
 The Black-Litterman expected returns from the combination of optimal implied returns from the consensus market capitalization proportional weighting portfolio and the views expressed by the stock forecast algorithm are determined using the formula:
 
-$$
-E[R]=\left[\left(\tau\Sigma\right)^{-1}+P^T\Omega^{-1}P\right]^{-1}
-\left[\left(\tau\Sigma\right)^{-1}\pi+P^T\Omega^{-1}Q\right]
-$$
+![](https://latex.codecogs.com/svg.image?E[R]=\left[\left(\tau\Sigma\right)^{-1}&plus;P^T\Omega^{-1}P\right]^{-1}\left[\left(\tau\Sigma\right)^{-1}\pi&plus;P^T\Omega^{-1}Q\right])
 
 From the expected returns, the Black-Litterman weights can be determined through reverse reverse optimization as follows:
 
-$$
-w_{BL}=\left(\lambda\Sigma\right)^{-1}E[R]
-$$
+![](https://latex.codecogs.com/svg.image?w_{BL}=\left(\lambda\Sigma\right)^{-1}E[R])
 
 The code for this is below.
 
