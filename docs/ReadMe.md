@@ -291,7 +291,7 @@ The uncertainty matrix  is a K-by-K diagonal-positive matrix holding the varianc
 The confidence level of a view represents its reliability on a scale of 0% to 100%. Assuming that an investor is 100% certain in their view, the expected return of their portfolio is then:
 
 $$
-E [ R_{100\%} ] = \pi + \tau \Sigma P^T ( P \tau \Sigma P^T )^{-1} ( Q - P \pi )
+E[R_{ 100\% }]= \pi + \tau \Sigma P^T(P \tau \Sigma P^T)^{-1}(Q-P\pi)
 $$
 
 and then the Black-Litterman weights of the portfolio would be found using
@@ -303,7 +303,7 @@ $$
 From analyzing the accuracy of the stock forecast method, a confidence level of 35% was decided upon for use on each view. Since this confidence is not 100%, the Black-Litterman weighted portfolio will not deviate from the consensus portfolio with the stock forecast views by 100%. Instead, let
 
 $$
-\Delta_{w} = \left( w_{100\%} - w_{consensus} \right) * 0.35
+\Delta_{w}=\left(w_{100\%}-w_{consensus}\right)*0.35
 $$
 
 be an N-by-1 vector denoting how far the Black-Litterman model will deviate from the consensus portfolio weights based on the stock forecast algorithm views.
